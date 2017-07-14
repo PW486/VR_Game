@@ -631,8 +631,8 @@ PlayerSettings:
     UNet: 1
   facebookSdkVersion: 7.9.1
   apiCompatibilityLevel: 2
-  cloudProjectId: b7505d7e-d04c-4de0-a0d4-f481669d85c5
-  projectName: New Unity Project (3)
+  cloudProjectId: ece41609-c41f-4e11-a417-3afa14389b45
+  projectName: VR_Sample
   organizationId: ooqwe486
   cloudEnabled: 0
   enableNewInputSystem: 0
