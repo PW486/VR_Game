@@ -10,12 +10,15 @@ public class Manager : MonoBehaviour {
     public GameObject floorA;
     public GameObject floorB;
     public GameObject floorC;
+    public int keyCount;
 
     public GameObject celing;
 
     public GameObject wallA;
     public GameObject wallB;
     public GameObject wallC;
+
+    public GameObject key;
 
     // Use this for initialization
     void Start () {
@@ -225,11 +228,40 @@ public class Manager : MonoBehaviour {
         {
             for(int j = 0; j < maxY; j ++)
             {
-               Vector3 position = new Vector3(i * (float)5.8, 0, j * (float)5.8);
+               Vector3 position = new Vector3(i * (float)5.86, 0, j * (float)5.86);
                Instantiate(floorA, position, Quaternion.identity);
-                position = new Vector3(i * (float)5.8, 5.5f, j * (float)5.8);
+                position = new Vector3(i * (float)5.86, 5.5f, j * (float)5.86);
                 Instantiate(celing, position, Quaternion.identity);
             }
+        }
+
+        int[] random = new int[maxX * maxY];
+
+        for(int i = 0; i < maxX; i ++)
+        {
+            for(int j = 0; j < maxY; j ++)
+            {
+                random[i * maxY + j] = 0;
+            }
+        }
+
+        for (int i = 0; i < keyCount; i ++)
+        {
+            int randX;
+            int randZ;
+            while (true)
+            {
+                randX = Random.Range(1, maxX);
+                randZ = Random.Range(1, maxY);
+                if(random[randX*maxY + randZ] == 0)
+                {
+                    random[randX * maxY + randZ] = 1;
+                    break;
+                }
+            }
+
+            Vector3 position = new Vector3(randX * 5.86f + 2.3f, 0.06016f, randZ * 5.86f + 2.8f);
+            Instantiate(key, position, Quaternion.identity);
         }
 
         bool[] sero = new bool[maxY];
@@ -260,7 +292,7 @@ public class Manager : MonoBehaviour {
             {
                 if(sero[j])
                 { 
-                    Vector3 position = new Vector3(i * (float)5.8 - 2.54f, 0, j * (float)5.8 + 0.01f);
+                    Vector3 position = new Vector3(i * 5.86f - 2.54f, 0, j * 5.86f + 0.01f);
                     Instantiate(wallA, position, Quaternion.identity);
                 }
             }
@@ -292,7 +324,7 @@ public class Manager : MonoBehaviour {
             {
                 if (garo[j])
                 {
-                    Vector3 position = new Vector3(i * (float)5.8 + 0.68f, 0, j * (float)5.8 - 2.62f);
+                    Vector3 position = new Vector3(i * 5.86f + 0.68f, 0, j * 5.86f - 2.62f);
                     Instantiate(wallA, position, Quaternion.Euler(0, 90f, 0));
                 }
             }
