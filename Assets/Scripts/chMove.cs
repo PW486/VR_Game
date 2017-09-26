@@ -18,11 +18,16 @@ public class chMove : MonoBehaviour {
     public Text myText;
     public Text keyText;
 
+    public AudioSource get;
+    public AudioSource move;
+    public AudioSource heart;
+
     void Start()
     {
         play_canvas.gameObject.SetActive(true);
-        myKey = 2;
         StartCoroutine("startCanvas");
+        StartCoroutine("heartBeat");
+        move.Play();
     }
 
     // Update is called once per frame
@@ -30,6 +35,7 @@ public class chMove : MonoBehaviour {
     {
         if (col.gameObject.tag == "Key")
         {
+            get.Play();
             myKey--;
             myText.text = "Remain Key : " + myKey.ToString();
             StartCoroutine("getKey");
@@ -41,7 +47,7 @@ public class chMove : MonoBehaviour {
         {
             if(myKey == 0)
             {
-                end_game();
+                StartCoroutine("end_game");
             }
             else
             {
@@ -58,15 +64,56 @@ public class chMove : MonoBehaviour {
         transform.Translate(0f, 0f, v * moveSpeed * Time.deltaTime);
         transform.Rotate(0f, h * turnSpeed * Time.deltaTime, 0f);
 
+        if(Input.anyKey)
+        {
+            move.mute = false;
+        }
+        else
+        {
+            move.mute = true;
+        }
+
 		if (Input.touchCount > 0)
 		{
-			transform.position += new Vector3(Camera.main.transform.forward.x * moveSpeed * Time.deltaTime,0, Camera.main.transform.forward.z * moveSpeed * Time.deltaTime);
-		}
+            transform.position += new Vector3(Camera.main.transform.forward.x * moveSpeed * Time.deltaTime, 0, Camera.main.transform.forward.z * moveSpeed * Time.deltaTime);
+        }
     }
 
-    void end_game()
+    IEnumerator heartBeat()
+    {
+        yield return new WaitForSeconds(3.0f);
+        for (int j = 0; j < 8; j++)
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                heart.Play();
+                yield return new WaitForSeconds(3.1f - j * 0.3f);
+            }
+        }
+        for (int j = 0; j < 2; j++)
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                heart.Play();
+                yield return new WaitForSeconds(0.8f - j * 0.3f);
+            }
+        }
+        death_canvas.gameObject.SetActive(true);
+        StartCoroutine("gameover");
+    }
+
+    IEnumerator gameover()
+    {
+        Time.timeScale = 0;
+        yield return new WaitForSeconds(2.5f);
+        Application.Quit();
+    }
+
+    IEnumerator end_game()
     {
         end_canvas.gameObject.SetActive(true);
+        yield return new WaitForSeconds(3.0f);
+        Application.Quit();
     }
 
     IEnumerator startCanvas()

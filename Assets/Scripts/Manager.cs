@@ -18,6 +18,10 @@ public class Manager : MonoBehaviour {
     public GameObject wallB;
     public GameObject wallC;
 
+    public AudioSource music1;
+    public AudioSource music2;
+
+
     public GameObject key;
 
     // Use this for initialization
@@ -329,10 +333,23 @@ public class Manager : MonoBehaviour {
                 }
             }
         }
+
+        StartCoroutine("bgm");
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    IEnumerator bgm()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(25f);
+            music2.Play();
+            yield return new WaitForSeconds(15f);
+            music1.Play();
+        }
+    }
+
+    // Update is called once per frame
+    void Update () {
 		
 	}
 }
